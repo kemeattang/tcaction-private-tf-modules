@@ -1,0 +1,19 @@
+name: "Private Terraform Modules"
+description: "Gives workflows access to private Terraform modules in GitHub"
+
+inputs:
+  org:
+    description: "The GitHub organization that owns the private Terraform module repositories"
+    required: true
+
+  token:
+    description: "GitHub token with access to the private repositories"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup private repo credentials for private modules
+      run: |
+        git config --global url."https://git:${{ inputs.token }}@github.com/${{ inputs.org }}".insteadOf "https://github.com/${{ inputs.org }}"
+      shell: bash
